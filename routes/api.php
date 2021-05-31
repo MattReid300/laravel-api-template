@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Verb	      URI	                    Action	Route Name
+// GET	      /articles	                index	articles.index
+// GET	      /articles/{photo}	        show	articles.show 
+// POST	      /articles	                store	articles.store
+// PUT/PATCH  /articles/{photo}	        update	articles.update
+// DELETE	  /articles/{photo}	        delete	articles.delete
+Route::apiResource('articles', ArticleController::class);
+
