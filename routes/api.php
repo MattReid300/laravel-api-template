@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 // Verb	      URI	                    Action	Route Name
 // GET	      /articles	                index	articles.index
-// GET	      /articles/{photo}	        show	articles.show 
+// GET	      /articles/{id}	        show	articles.show 
 // POST	      /articles	                store	articles.store
-// PUT/PATCH  /articles/{photo}	        update	articles.update
-// DELETE	  /articles/{photo}	        delete	articles.delete
+// PUT/PATCH  /articles/{id}	        update	articles.update
+// DELETE	  /articles/{id}	        delete	articles.delete
 Route::apiResource('articles', ArticleController::class);
 
