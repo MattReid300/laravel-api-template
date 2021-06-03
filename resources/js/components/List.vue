@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <button
-      @click="createArticle"
       style="margin-left: 190px; background-color: lightgreen"
       data-toggle="modal"
       data-target="#exampleModal2"
@@ -24,17 +23,33 @@
             </h5>
           </div>
           <div class="modal-body">
-              <label>Title:</label>
-              <br />
-              <input type="text" id="title" style="width: 25rem">
-              <br />
-              <br />
-              <label>Body:</label>
-              <br />
-              <input type="text" id="body" style="width: 25rem; height: 10rem">
+            <label>Title:</label>
+            <br />
+            <input
+              type="text"
+              id="title"
+              v-model="article.title"
+              style="width: 25rem"
+            />
+            <br />
+            <br />
+            <label>Body:</label>
+            <br />
+            <textarea
+              rows="5"
+              cols="20"
+              id="body"
+              v-model="article.body"
+              style="width: 25rem; height: 10rem"
+            />
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              @click="createArticle"
+            >
               Submit
             </button>
             <button
@@ -56,6 +71,7 @@
           v-bind="article"
           @arrayArtModified="editArrayItem"
           @arrayTruncated="removeArrayItem"
+          class="card"
         ></Card>
       </div>
     </div>
@@ -66,17 +82,23 @@
 import Card from "./Card.vue";
 // import articles from 'C:\Users\Despacho\laravel-api-template\routes\api.php'
 export default {
+  components: { Card },
   data() {
     return {
       articles: [],
+      article: {
+        title: "",
+        body: "",
+      },
     };
   },
-  components: { Card },
   mounted() {
     axios({
       url: "http://127.0.0.1:8000/api/articles",
       method: "GET",
-    }).then((response) => (this.articles = response.data));
+    }).then((response) => {
+      this.articles = response.data.sort((a, b) => b.id - a.id, { id: 0 });
+    });
   },
   methods: {
     removeArrayItem(id) {
@@ -89,16 +111,35 @@ export default {
     },
     createArticle() {
       axios({
-        url: "http://127.0.0.1:8000/api/articles/" + this.id,
+        url: "http://127.0.0.1:8000/api/articles/",
         method: "POST",
-      }).then((response) => {
-        if (response.status == 200) {
-          console.log(response);
-        } else {
-          console.log(error);
-        }
-      });
+        data: {
+          ...this.article,
+        },
+      })
+        .then((response) => {
+          if (response.status == 201) {
+            console.log(response);
+            let newArt = response.data;
+            this.articles.unshift(newArt);
+            this.article.title = "";
+            this.article.body = "";
+            alert("Your even has been registered!");
+          }
+        })
+        .catch((error) => console.error(error));
     },
   },
 };
 </script>
+
+<style scoped>
+.card {
+  transition: box-shadow 0.3s;
+  border-radius: 10px;
+  border: 3px solid #ccc;
+}
+.card:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+}
+</style>

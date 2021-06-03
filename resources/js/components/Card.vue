@@ -6,9 +6,12 @@
         class="btn btn-light"
         data-toggle="modal"
         :data-target="`#modal-${id}`"
-        style="height: 8rem; width: 100%"
+        style="height: 8rem; width: 100%; text-align: left"
       >
-        <p>{{ title }}</p>
+        <h4>{{ title }}</h4>
+        <p v-if="body.length<50">{{ body }}</p>
+        <p v-else>{{ body.substring(0,50)+"..." }}</p>
+
       </button>
       <div
         class="modal fade"
@@ -106,8 +109,8 @@ export default {
         url: "http://127.0.0.1:8000/api/articles/" + this.id,
         method: "PUT",
         data: {
-          body,
-        },
+          body
+        }
       }).then((response) => {
         if (response.status == 200) {
           console.log(response);
@@ -135,3 +138,4 @@ export default {
   width: 80px;
 }
 </style>
+

@@ -5,7 +5,7 @@
 </head>
 
 <body>
-    <h1 style="text-align: center; color: rgb(0, 50, 100)"><b>Template 1</b></h1>
+    <h1 style="text-align: center; color: rgb(0, 50, 100); margin: 30px"><b>Template 1</b></h1>
     <div id="app">
         <list></list>
     </div>
